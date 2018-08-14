@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js';
 import { client } from 'ontology-dapi';
 import * as React from 'react';
 import { RouterProps } from 'react-router';
@@ -18,7 +17,7 @@ export const Asset: React.SFC<RouterProps> = (props) => {
     const account = await client.api.asset.getDefaultAccount();
 
     try {
-      await client.api.asset.makeTransfer(account!, 'AXCyYV4DNmmsqZn9qJEqHqpacVxcr7X7ns', 'ONT', new BigNumber(5));
+      await client.api.asset.makeTransfer(account!, 'AXCyYV4DNmmsqZn9qJEqHqpacVxcr7X7ns', 'ONT', 5);
       // alert('onMakeTransfer finished: ' + JSON.stringify(result));
     } catch (e) {
       alert('onMakeTransfer canceled');
