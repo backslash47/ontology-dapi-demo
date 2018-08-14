@@ -6,9 +6,15 @@ export const Home: React.SFC<RouterProps> = (props) => {
     props.history.push('/network');
   }
 
+  function onAsset() {
+    props.history.push('/asset');
+  }
+
   return (
     <div>
       <button onClick={onNetwork}>Network</button>
+      <br />
+      <button onClick={onAsset}>Asset</button>
     </div>
   );
 };
