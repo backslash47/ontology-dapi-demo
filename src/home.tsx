@@ -10,11 +10,17 @@ export const Home: React.SFC<RouterProps> = (props) => {
     props.history.push('/asset');
   }
 
+  function onSmartContract() {
+    props.history.push('/smart-contract');
+  }
+
   return (
     <div>
       <button onClick={onNetwork}>Network</button>
-      <br />
+      <hr />
       <button onClick={onAsset}>Asset</button>
+      <hr />
+      <button onClick={onSmartContract}>Smart contract</button>
     </div>
   );
 };

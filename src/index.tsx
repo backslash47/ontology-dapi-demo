@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Asset } from './asset';
 import { Home } from './home';
 import { Network } from './network';
+import { SmartContract } from './smartContract';
 
 const App: React.SFC<{}> = () => (
   <BrowserRouter>
@@ -12,6 +13,7 @@ const App: React.SFC<{}> = () => (
       <Route path="/" exact={true} component={Home} />
       <Route path="/network" exact={true} component={Network} />
       <Route path="/asset" exact={true} component={Asset} />
+      <Route path="/smart-contract" exact={true} component={SmartContract} />
     </>
   </BrowserRouter>
 );

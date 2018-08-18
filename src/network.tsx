@@ -18,13 +18,19 @@ export const Network: React.SFC<RouterProps> = (props) => {
     alert('onGetBalance: ' + JSON.stringify(balance));
   }
 
+  function onBack() {
+    props.history.goBack();
+  }
+
   return (
     <div>
       <button onClick={onGetBlockHeight}>getBlockHeight</button>
-      <br />
+      <hr />
       <button onClick={onGetBlock}>getBlock</button>
-      <br />
+      <hr />
       <button onClick={onGetBalance}>getBalance</button>
+      <hr />
+      <button onClick={onBack}>Back</button>
     </div>
   );
 };
