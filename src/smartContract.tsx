@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Field, Form } from 'react-final-form';
 import { RouterProps } from 'react-router';
 
+// tslint:disable:max-line-length
 export const SmartContract: React.SFC<RouterProps> = (props) => {
   async function onScCall(values: any) {
     const account = await client.api.asset.getDefaultAccount();
@@ -35,6 +36,40 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       alert('onScCallRead canceled');
       // tslint:disable-next-line:no-console
       console.log('onScCallRead error:', e);
+    }
+  }
+
+  async function onScDeploy(values: any) {
+    const account = await client.api.asset.getDefaultAccount();
+
+    const code: string = values.code;
+    const name: string = values.name;
+    const version: string = values.version;
+    const author: string = values.author;
+    const email: string = values.email;
+    const description: string = values.description;
+    const needStorage: boolean = values.needStorage;
+    const gasPrice: number = Number(values.gasPrice);
+    const gasLimit: number = Number(values.gasLimit);
+
+    try {
+      const result = await client.api.smartContract.deploy(
+        account,
+        code,
+        name,
+        version,
+        author,
+        email,
+        description,
+        needStorage,
+        gasPrice,
+        gasLimit
+      );
+      alert('onScDeploy finished, result:' + JSON.stringify(result));
+    } catch (e) {
+      alert('onScDeploy canceled');
+      // tslint:disable-next-line:no-console
+      console.log('onScDeploy error:', e);
     }
   }
 
@@ -92,6 +127,57 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
             <br />
             <br />
             <button type="submit">Call SC ReadOnly</button>
+          </form>
+        )}
+      />
+      <hr />
+      <h2>ScDeploy</h2>
+      <Form
+        initialValues={{
+          code:
+            '57c56b6c766b00527ac46c766b51527ac4616c766b00c303416464876c766b52527ac46c766b52c3645d00616c766b51c3c0529c009c6c766b55527ac46c766b55c3640e00006c766b56527ac46243006c766b51c300c36c766b53527ac46c766b51c351c36c766b54527ac46c766b53c36c766b54c3617c6521006c766b56527ac4620e00006c766b56527ac46203006c766b56c3616c756653c56b6c766b00527ac46c766b51527ac46151c576006c766b00c36c766b51c393c461681553797374656d2e52756e74696d652e4e6f74696679616c766b00c36c766b51c3936c766b52527ac46203006c766b52c3616c7566',
+          name: 'Test contract',
+          version: '1.0.0',
+          author: 'Mr. Nobody',
+          email: 'nobody@nowhere.com',
+          description: 'Just a plain contract',
+          needStorage: false,
+          gasPrice: '500',
+          gasLimit: '100000000'
+        }}
+        onSubmit={onScDeploy}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <h4>code</h4>
+            <Field name="code" component="textarea" />
+
+            <h4>name</h4>
+            <Field name="name" component="input" />
+
+            <h4>version</h4>
+            <Field name="version" component="input" />
+
+            <h4>author</h4>
+            <Field name="author" component="input" />
+
+            <h4>email</h4>
+            <Field name="email" component="input" />
+
+            <h4>description</h4>
+            <Field name="description" component="input" />
+
+            <h4>need storage</h4>
+            <Field name="needStorage" component="input" type="checkbox" />
+
+            <h4>Gas price</h4>
+            <Field name="gasPrice" component="input" type="number" />
+
+            <h4>Gas limit</h4>
+            <Field name="gasLimit" component="input" type="number" />
+
+            <br />
+            <br />
+            <button type="submit">Deploy SC</button>
           </form>
         )}
       />
