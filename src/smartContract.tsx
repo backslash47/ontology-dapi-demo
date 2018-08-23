@@ -16,7 +16,8 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
 
     try {
       const result = await client.api.smartContract.invoke(account, contract, method, params, gasPrice, gasLimit, []);
-      alert('onScCall finished, result:' + JSON.stringify(result));
+      // tslint:disable-next-line:no-console
+      console.log('onScCall finished, result:' + JSON.stringify(result));
     } catch (e) {
       alert('onScCall canceled');
       // tslint:disable-next-line:no-console
@@ -82,7 +83,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       <h2>ScCall</h2>
       <Form
         initialValues={{
-          contract: 'bd76a5917e0444d4b615b87c5912362164676dc7',
+          contract: 'fe7a542bd4f1ae71d42c4b15480fb2f421c7631b',
           method: 'Add',
           gasPrice: '500',
           gasLimit: '100000000'
@@ -112,7 +113,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       <h2>ScCall read</h2>
       <Form
         initialValues={{
-          contract: 'bd76a5917e0444d4b615b87c5912362164676dc7',
+          contract: 'fe7a542bd4f1ae71d42c4b15480fb2f421c7631b',
           method: 'Add'
         }}
         onSubmit={onScCallRead}

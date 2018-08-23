@@ -18,12 +18,19 @@ export const Network: React.SFC<RouterProps> = (props) => {
     alert('onGetBalance: ' + JSON.stringify(balance));
   }
 
+  async function onGetNetwork() {
+    const network = await client.api.network.getNetwork();
+    alert('onGetNetwork: ' + JSON.stringify(network));
+  }
+
   function onBack() {
     props.history.goBack();
   }
 
   return (
     <div>
+      <button onClick={onGetNetwork}>getNetwork</button>
+      <hr />
       <button onClick={onGetBlockHeight}>getBlockHeight</button>
       <hr />
       <button onClick={onGetBlock}>getBlock</button>
