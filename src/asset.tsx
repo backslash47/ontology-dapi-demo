@@ -4,25 +4,18 @@ import { Field, Form } from 'react-final-form';
 import { RouterProps } from 'react-router';
 
 export const Asset: React.SFC<RouterProps> = (props) => {
-  async function onGetOwnAccounts() {
-    const accounts = await client.api.asset.getOwnAccounts();
-    alert('onGetOwnAccounts: ' + JSON.stringify(accounts));
-  }
-
   async function onGetDefaultAccount() {
     const account = await client.api.asset.getDefaultAccount();
     alert('onGetDefaultAccount: ' + JSON.stringify(account));
   }
 
   async function onMakeTransfer(values: any) {
-    const account = await client.api.asset.getDefaultAccount();
-
     const recipient: string = values.recipient;
     const amount: number = Number(values.amount);
     const asset: 'ONT' | 'ONG' = values.asset;
 
     try {
-      const result = await client.api.asset.makeTransfer(account!, recipient, asset, amount);
+      const result = await client.api.asset.makeTransfer(recipient, asset, amount);
       alert('onMakeTransfer finished, txHash:' + result);
     } catch (e) {
       alert('onMakeTransfer canceled');
@@ -37,8 +30,6 @@ export const Asset: React.SFC<RouterProps> = (props) => {
 
   return (
     <div>
-      <button onClick={onGetOwnAccounts}>getOwnAccounts</button>
-      <hr />
       <button onClick={onGetDefaultAccount}>getDefaultAccount</button>
       <hr />
 

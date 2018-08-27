@@ -6,16 +6,22 @@ import { RouterProps } from 'react-router';
 // tslint:disable:max-line-length
 export const SmartContract: React.SFC<RouterProps> = (props) => {
   async function onScCall(values: any) {
-    const account = await client.api.asset.getDefaultAccount();
-
     const contract: string = values.contract;
     const method: string = values.method;
     const gasPrice: number = Number(values.gasPrice);
     const gasLimit: number = Number(values.gasLimit);
+    const requireIdentity: boolean = values.requireIdentity;
     const params: Parameter[] = [{ type: 'Integer', value: 5 }, { type: 'Integer', value: 4 }];
 
     try {
-      const result = await client.api.smartContract.invoke(account, contract, method, params, gasPrice, gasLimit, []);
+      const result = await client.api.smartContract.invoke(
+        contract,
+        method,
+        params,
+        gasPrice,
+        gasLimit,
+        requireIdentity
+      );
       // tslint:disable-next-line:no-console
       console.log('onScCall finished, result:' + JSON.stringify(result));
     } catch (e) {
@@ -41,8 +47,6 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
   }
 
   async function onScDeploy(values: any) {
-    const account = await client.api.asset.getDefaultAccount();
-
     const code: string = values.code;
     const name: string = values.name;
     const version: string = values.version;
@@ -55,7 +59,6 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
 
     try {
       const result = await client.api.smartContract.deploy(
-        account,
         code,
         name,
         version,
@@ -103,6 +106,8 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
             <h4>Gas limit</h4>
             <Field name="gasLimit" component="input" type="number" />
 
+            <h4>Require identity sign</h4>
+            <Field name="requireIdentity" component="input" type="checkbox" />
             <br />
             <br />
             <button type="submit">Call SC</button>
