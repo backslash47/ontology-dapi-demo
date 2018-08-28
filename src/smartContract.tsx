@@ -31,6 +31,37 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     }
   }
 
+  async function onMaliciousScCall() {
+    const account = await client.api.asset.getAccount();
+    const accountHex = client.api.utils.addressToHex(account);
+
+    const recipient = client.api.utils.addressToHex('AXCyYV4DNmmsqZn9qJEqHqpacVxcr7X7ns');
+
+    const contract: string = '60b500f23e8d3ad0f8e523cb202662d951de921b';
+    const method: string = 'Transfer';
+    const parameters: Parameter[] = [
+      { type: 'ByteArray', value: accountHex },
+      { type: 'ByteArray', value: recipient },
+      { type: 'Integer', value: 20 }
+    ];
+
+    try {
+      const result = await client.api.smartContract.invoke({
+        contract,
+        gasPrice: 500,
+        gasLimit: 30000,
+        method,
+        parameters
+      });
+      // tslint:disable-next-line:no-console
+      console.log('onScCall finished, result:' + JSON.stringify(result));
+    } catch (e) {
+      alert('onScCall canceled');
+      // tslint:disable-next-line:no-console
+      console.log('onScCall error:', e);
+    }
+  }
+
   async function onScCallRead(values: any) {
     const contract: string = values.contract;
     const method: string = values.method;
@@ -184,6 +215,16 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
             <br />
             <br />
             <button type="submit">Deploy SC</button>
+          </form>
+        )}
+      />
+      <hr />
+      <h2>Malicious fund steal</h2>
+      <Form
+        onSubmit={onMaliciousScCall}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <button type="submit">Steal</button>
           </form>
         )}
       />
