@@ -6,25 +6,12 @@ import { RouterProps } from 'react-router';
 // tslint:disable:max-line-length
 export const SmartContract: React.SFC<RouterProps> = (props) => {
   async function onScCall(values: any) {
-    const account = await client.api.asset.getAccount();
-    const accountHex = client.api.utils.addressToHex(account);
-
-    const recipient = client.api.utils.addressToHex('AXCyYV4DNmmsqZn9qJEqHqpacVxcr7X7ns');
-
-    // tslint:disable-next-line:no-console
-    console.log('hex account', accountHex);
-
     const contract: string = values.contract;
     const method: string = values.method;
     const gasPrice: number = Number(values.gasPrice);
     const gasLimit: number = Number(values.gasLimit);
     const requireIdentity: boolean = values.requireIdentity;
-
-    const parameters: Parameter[] = [
-      { type: 'ByteArray', value: accountHex },
-      { type: 'ByteArray', value: recipient },
-      { type: 'Integer', value: 250 }
-    ];
+    const parameters: Parameter[] = [{ type: 'Integer', value: 5 }, { type: 'Integer', value: 4 }];
 
     try {
       const result = await client.api.smartContract.invoke({
@@ -99,8 +86,8 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       <h2>ScCall</h2>
       <Form
         initialValues={{
-          contract: '60b500f23e8d3ad0f8e523cb202662d951de921b',
-          method: 'Transfer',
+          contract: 'fe7a542bd4f1ae71d42c4b15480fb2f421c7631b',
+          method: 'Add',
           gasPrice: '500',
           gasLimit: '100000000'
         }}
