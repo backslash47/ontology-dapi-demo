@@ -20,5 +20,5 @@ const App: React.SFC<{}> = () => (
   </BrowserRouter>
 );
 
-Ontology.client.registerClient();
+Ontology.client.registerClient({});
 ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);

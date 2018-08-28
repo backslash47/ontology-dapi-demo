@@ -11,17 +11,17 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     const gasPrice: number = Number(values.gasPrice);
     const gasLimit: number = Number(values.gasLimit);
     const requireIdentity: boolean = values.requireIdentity;
-    const params: Parameter[] = [{ type: 'Integer', value: 5 }, { type: 'Integer', value: 4 }];
+    const parameters: Parameter[] = [{ type: 'Integer', value: 5 }, { type: 'Integer', value: 4 }];
 
     try {
-      const result = await client.api.smartContract.invoke(
+      const result = await client.api.smartContract.invoke({
         contract,
         method,
-        params,
+        parameters,
         gasPrice,
         gasLimit,
         requireIdentity
-      );
+      });
       // tslint:disable-next-line:no-console
       console.log('onScCall finished, result:' + JSON.stringify(result));
     } catch (e) {
@@ -34,10 +34,10 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
   async function onScCallRead(values: any) {
     const contract: string = values.contract;
     const method: string = values.method;
-    const params: Parameter[] = [{ type: 'Integer', value: 5 }, { type: 'Integer', value: 4 }];
+    const parameters: Parameter[] = [{ type: 'Integer', value: 5 }, { type: 'Integer', value: 4 }];
 
     try {
-      const result = await client.api.smartContract.invokeRead(contract, method, params);
+      const result = await client.api.smartContract.invokeRead({ contract, method, parameters });
       alert('onScCallRead finished, result:' + JSON.stringify(result));
     } catch (e) {
       alert('onScCallRead canceled');
@@ -58,7 +58,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     const gasLimit: number = Number(values.gasLimit);
 
     try {
-      const result = await client.api.smartContract.deploy(
+      const result = await client.api.smartContract.deploy({
         code,
         name,
         version,
@@ -68,7 +68,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
         needStorage,
         gasPrice,
         gasLimit
-      );
+      });
       alert('onScDeploy finished, result:' + JSON.stringify(result));
     } catch (e) {
       alert('onScDeploy canceled');

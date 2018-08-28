@@ -9,12 +9,12 @@ export const Network: React.SFC<RouterProps> = (props) => {
   }
 
   async function onGetBlock() {
-    const block = await client.api.network.getBlock(1);
+    const block = await client.api.network.getBlock({ block: 1 });
     alert('onGetBlock: ' + JSON.stringify(block));
   }
 
   async function onGetBalance() {
-    const balance = await client.api.network.getBalance('AcyLq3tokVpkMBMLALVMWRdVJ83TTgBUwU');
+    const balance = await client.api.network.getBalance({ address: 'AcyLq3tokVpkMBMLALVMWRdVJ83TTgBUwU' });
     alert('onGetBalance: ' + JSON.stringify(balance));
   }
 

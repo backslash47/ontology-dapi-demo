@@ -4,9 +4,9 @@ import { Field, Form } from 'react-final-form';
 import { RouterProps } from 'react-router';
 
 export const Asset: React.SFC<RouterProps> = (props) => {
-  async function onGetDefaultAccount() {
-    const account = await client.api.asset.getDefaultAccount();
-    alert('onGetDefaultAccount: ' + JSON.stringify(account));
+  async function onGetAccount() {
+    const account = await client.api.asset.getAccount();
+    alert('onGetAccount: ' + JSON.stringify(account));
   }
 
   async function onMakeTransfer(values: any) {
@@ -15,7 +15,7 @@ export const Asset: React.SFC<RouterProps> = (props) => {
     const asset: 'ONT' | 'ONG' = values.asset;
 
     try {
-      const result = await client.api.asset.makeTransfer(recipient, asset, amount);
+      const result = await client.api.asset.makeTransfer({ recipient, asset, amount });
       alert('onMakeTransfer finished, txHash:' + result);
     } catch (e) {
       alert('onMakeTransfer canceled');
@@ -30,7 +30,7 @@ export const Asset: React.SFC<RouterProps> = (props) => {
 
   return (
     <div>
-      <button onClick={onGetDefaultAccount}>getDefaultAccount</button>
+      <button onClick={onGetAccount}>getAccount</button>
       <hr />
 
       <h2>Transfer</h2>
