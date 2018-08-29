@@ -13,6 +13,14 @@ export const Network: React.SFC<RouterProps> = (props) => {
     alert('onGetBlock: ' + JSON.stringify(block));
   }
 
+  async function onGetTransaction() {
+    const transaction = await client.api.network.getTransaction({
+      txHash: '314e24e5bb0bd88852b2f13e673e5dcdfd53bdab909de8b9812644d6871bc05f'
+    });
+    // tslint:disable-next-line:no-console
+    console.log('onGetTransaction: ' + JSON.stringify(transaction));
+  }
+
   async function onGetBalance() {
     const balance = await client.api.network.getBalance({ address: 'AcyLq3tokVpkMBMLALVMWRdVJ83TTgBUwU' });
     alert('onGetBalance: ' + JSON.stringify(balance));
@@ -34,6 +42,8 @@ export const Network: React.SFC<RouterProps> = (props) => {
       <button onClick={onGetBlockHeight}>getBlockHeight</button>
       <hr />
       <button onClick={onGetBlock}>getBlock</button>
+      <hr />
+      <button onClick={onGetTransaction}>getTransaction</button>
       <hr />
       <button onClick={onGetBalance}>getBalance</button>
       <hr />
