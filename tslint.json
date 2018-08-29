@@ -6,7 +6,7 @@
   "jsRules": {},
   "rules": {
     "quotemark": [true, "single", "jsx-double"],
-    "ter-indent": [true, 2],
+    "ter-indent": [true, 2, { "SwitchCase": 1}],
     "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
     "interface-name" : [true, "never-prefix"],
     "member-access": false,

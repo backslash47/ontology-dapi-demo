@@ -1,6 +1,8 @@
-import { client, Parameter } from 'ontology-dapi';
+import arrayMutators from 'final-form-arrays';
+import { client, ParameterType } from 'ontology-dapi';
 import * as React from 'react';
 import { Field, Form } from 'react-final-form';
+import { FieldArray } from 'react-final-form-arrays';
 import { RouterProps } from 'react-router';
 
 // tslint:disable:max-line-length
@@ -11,8 +13,9 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     const gasPrice: number = Number(values.gasPrice);
     const gasLimit: number = Number(values.gasLimit);
     const requireIdentity: boolean = values.requireIdentity;
-    const parameters: Parameter[] = [{ type: 'Integer', value: 5 }, { type: 'Integer', value: 4 }];
+    const parametersRaw: any[] = values.parameters;
 
+    const parameters = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
     try {
       const result = await client.api.smartContract.invoke({
         contract,
@@ -34,15 +37,31 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
   async function onScCallRead(values: any) {
     const contract: string = values.contract;
     const method: string = values.method;
-    const parameters: Parameter[] = [{ type: 'Integer', value: 5 }, { type: 'Integer', value: 4 }];
+    const parametersRaw: any[] = values.parameters;
+
+    const parameters = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
 
     try {
       const result = await client.api.smartContract.invokeRead({ contract, method, parameters });
-      alert('onScCallRead finished, result:' + JSON.stringify(result));
+      // tslint:disable-next-line:no-console
+      console.log('onScCallRead finished, result:' + JSON.stringify(result));
     } catch (e) {
       alert('onScCallRead canceled');
       // tslint:disable-next-line:no-console
       console.log('onScCallRead error:', e);
+    }
+  }
+
+  function convertValue(value: string, type: ParameterType) {
+    switch (type) {
+      case 'Boolean':
+        return Boolean(value);
+      case 'Integer':
+        return Number(value);
+      case 'ByteArray':
+        return value;
+      case 'String':
+        return client.api.utils.strToHex(value);
     }
   }
 
@@ -86,13 +105,20 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       <h2>ScCall</h2>
       <Form
         initialValues={{
-          contract: 'fe7a542bd4f1ae71d42c4b15480fb2f421c7631b',
+          contract: 'bd76a5917e0444d4b615b87c5912362164676dc7',
           method: 'Add',
           gasPrice: '500',
-          gasLimit: '100000000'
+          gasLimit: '100000000',
+          parameters: [{ type: 'Integer', value: '5' }, { type: 'Integer', value: '4' }]
         }}
+        mutators={Object.assign({}, arrayMutators) as any}
         onSubmit={onScCall}
-        render={({ handleSubmit }) => (
+        render={({
+          form: {
+            mutators: { push, pop }
+          },
+          handleSubmit
+        }) => (
           <form onSubmit={handleSubmit}>
             <h4>Contract</h4>
             <Field name="contract" component="input" />
@@ -108,6 +134,31 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
 
             <h4>Require identity sign</h4>
             <Field name="requireIdentity" component="input" type="checkbox" />
+
+            <h4>Parameters</h4>
+            <button type="button" onClick={() => push('parameters', { type: 'Integer', value: '' })}>
+              Add Parameter
+            </button>
+            <FieldArray name="parameters">
+              {({ fields }) =>
+                fields.map((name, index) => (
+                  <div key={index}>
+                    <label>Type</label>
+                    <Field name={`${name}.type`} component="select">
+                      <option value="Boolean">Boolean</option>
+                      <option value="Integer">Integer</option>
+                      <option value="ByteArray">ByteArray</option>
+                      <option value="String">String</option>
+                    </Field>
+                    <label>Value</label>
+                    <Field name={`${name}.value`} component="input" />
+                    <span onClick={() => fields.remove(index)} style={{ cursor: 'pointer' }}>
+                      ❌
+                    </span>
+                  </div>
+                ))
+              }
+            </FieldArray>
             <br />
             <br />
             <button type="submit">Call SC</button>
@@ -118,11 +169,18 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       <h2>ScCall read</h2>
       <Form
         initialValues={{
-          contract: 'fe7a542bd4f1ae71d42c4b15480fb2f421c7631b',
-          method: 'Add'
+          contract: 'bd76a5917e0444d4b615b87c5912362164676dc7',
+          method: 'Add',
+          parameters: [{ type: 'Integer', value: '5' }, { type: 'Integer', value: '4' }]
         }}
+        mutators={Object.assign({}, arrayMutators) as any}
         onSubmit={onScCallRead}
-        render={({ handleSubmit }) => (
+        render={({
+          form: {
+            mutators: { push, pop }
+          },
+          handleSubmit
+        }) => (
           <form onSubmit={handleSubmit}>
             <h4>Contract</h4>
             <Field name="contract" component="input" />
@@ -130,6 +188,30 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
             <h4>Method</h4>
             <Field name="method" component="input" />
 
+            <h4>Parameters</h4>
+            <button type="button" onClick={() => push('parameters', { type: 'Integer', value: '' })}>
+              Add Parameter
+            </button>
+            <FieldArray name="parameters">
+              {({ fields }) =>
+                fields.map((name, index) => (
+                  <div key={index}>
+                    <label>Type</label>
+                    <Field name={`${name}.type`} component="select">
+                      <option value="Boolean">Boolean</option>
+                      <option value="Integer">Integer</option>
+                      <option value="ByteArray">ByteArray</option>
+                      <option value="String">String</option>
+                    </Field>
+                    <label>Value</label>
+                    <Field name={`${name}.value`} component="input" />
+                    <span onClick={() => fields.remove(index)} style={{ cursor: 'pointer' }}>
+                      ❌
+                    </span>
+                  </div>
+                ))
+              }
+            </FieldArray>
             <br />
             <br />
             <button type="submit">Call SC ReadOnly</button>
