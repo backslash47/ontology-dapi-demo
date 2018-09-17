@@ -18,11 +18,17 @@ export const Home: React.SFC<RouterProps> = (props) => {
     props.history.push('/provider');
   }
 
+  function onMessage() {
+    props.history.push('/message');
+  }
+
   return (
     <div>
       <button onClick={onProvider}>Provider</button>
       <hr />
       <button onClick={onNetwork}>Network</button>
+      <hr />
+      <button onClick={onMessage}>Messaage</button>
       <hr />
       <button onClick={onAsset}>Asset</button>
       <hr />
