@@ -8,19 +8,19 @@ import { RouterProps } from 'react-router';
 // tslint:disable:max-line-length
 export const SmartContract: React.SFC<RouterProps> = (props) => {
   async function onScCall(values: any) {
-    const contract: string = values.contract;
-    const method: string = values.method;
+    const scriptHash: string = values.contract;
+    const operation: string = values.method;
     const gasPrice: number = Number(values.gasPrice);
     const gasLimit: number = Number(values.gasLimit);
     const requireIdentity: boolean = values.requireIdentity;
     const parametersRaw: any[] = values.parameters;
 
-    const parameters = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
+    const args = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
     try {
       const result = await client.api.smartContract.invoke({
-        contract,
-        method,
-        parameters,
+        scriptHash,
+        operation,
+        args,
         gasPrice,
         gasLimit,
         requireIdentity
@@ -35,14 +35,14 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
   }
 
   async function onScCallRead(values: any) {
-    const contract: string = values.contract;
-    const method: string = values.method;
+    const scriptHash: string = values.contract;
+    const operation: string = values.method;
     const parametersRaw: any[] = values.parameters;
 
-    const parameters = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
+    const args = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
 
     try {
-      const result = await client.api.smartContract.invokeRead({ contract, method, parameters });
+      const result = await client.api.smartContract.invokeRead({ scriptHash, operation, args });
       // tslint:disable-next-line:no-console
       console.log('onScCallRead finished, result:' + JSON.stringify(result));
     } catch (e) {

@@ -9,18 +9,18 @@ export const Asset: React.SFC<RouterProps> = (props) => {
     alert('onGetAccount: ' + JSON.stringify(account));
   }
 
-  async function onMakeTransfer(values: any) {
-    const recipient: string = values.recipient;
+  async function onSend(values: any) {
+    const to: string = values.recipient;
     const amount: number = Number(values.amount);
     const asset: 'ONT' | 'ONG' = values.asset;
 
     try {
-      const result = await client.api.asset.makeTransfer({ recipient, asset, amount });
-      alert('onMakeTransfer finished, txHash:' + result);
+      const result = await client.api.asset.send({ to, asset, amount });
+      alert('onSend finished, txHash:' + result);
     } catch (e) {
-      alert('onMakeTransfer canceled');
+      alert('onSend canceled');
       // tslint:disable-next-line:no-console
-      console.log('onMakeTransfer error:', e);
+      console.log('onSend error:', e);
     }
   }
 
@@ -40,7 +40,7 @@ export const Asset: React.SFC<RouterProps> = (props) => {
           asset: 'ONT',
           recipient: 'AXCyYV4DNmmsqZn9qJEqHqpacVxcr7X7ns'
         }}
-        onSubmit={onMakeTransfer}
+        onSubmit={onSend}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <h4>Recipient</h4>
