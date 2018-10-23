@@ -1,11 +1,12 @@
-import { client } from 'ontology-dapi';
 import * as React from 'react';
 import { Field, Form } from 'react-final-form';
 import { RouterProps } from 'react-router';
 
+declare var dApi: any;
+
 export const Asset: React.SFC<RouterProps> = (props) => {
   async function onGetAccount() {
-    const account = await client.api.asset.getAccount();
+    const account = await dApi.client.api.asset.getAccount();
     alert('onGetAccount: ' + JSON.stringify(account));
   }
 
@@ -15,7 +16,7 @@ export const Asset: React.SFC<RouterProps> = (props) => {
     const asset: 'ONT' | 'ONG' = values.asset;
 
     try {
-      const result = await client.api.asset.send({ to, asset, amount });
+      const result = await dApi.client.api.asset.send({ to, asset, amount });
       alert('onSend finished, txHash:' + result);
     } catch (e) {
       alert('onSend canceled');

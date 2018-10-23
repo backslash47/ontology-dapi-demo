@@ -1,20 +1,21 @@
-import { client } from 'ontology-dapi';
 import * as React from 'react';
 import { RouterProps } from 'react-router';
 
+declare var dApi: any;
+
 export const Network: React.SFC<RouterProps> = (props) => {
   async function onGetBlockHeight() {
-    const height = await client.api.network.getBlockHeight();
+    const height = await dApi.client.api.network.getBlockHeight();
     alert('onGetBlockHeight: ' + height);
   }
 
   async function onGetBlock() {
-    const block = await client.api.network.getBlock({ block: 1 });
+    const block = await dApi.client.api.network.getBlock({ block: 1 });
     alert('onGetBlock: ' + JSON.stringify(block));
   }
 
   async function onGetTransaction() {
-    const transaction = await client.api.network.getTransaction({
+    const transaction = await dApi.client.api.network.getTransaction({
       txHash: '314e24e5bb0bd88852b2f13e673e5dcdfd53bdab909de8b9812644d6871bc05f'
     });
     // tslint:disable-next-line:no-console
@@ -22,12 +23,12 @@ export const Network: React.SFC<RouterProps> = (props) => {
   }
 
   async function onGetBalance() {
-    const balance = await client.api.network.getBalance({ address: 'AcyLq3tokVpkMBMLALVMWRdVJ83TTgBUwU' });
+    const balance = await dApi.client.api.network.getBalance({ address: 'AcyLq3tokVpkMBMLALVMWRdVJ83TTgBUwU' });
     alert('onGetBalance: ' + JSON.stringify(balance));
   }
 
   async function onGetNetwork() {
-    const network = await client.api.network.getNetwork();
+    const network = await dApi.client.api.network.getNetwork();
     alert('onGetNetwork: ' + JSON.stringify(network));
   }
 

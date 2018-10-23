@@ -1,9 +1,10 @@
 import arrayMutators from 'final-form-arrays';
-import { client, ParameterType } from 'ontology-dapi';
 import * as React from 'react';
 import { Field, Form } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import { RouterProps } from 'react-router';
+
+declare var dApi: any;
 
 // tslint:disable:max-line-length
 export const SmartContract: React.SFC<RouterProps> = (props) => {
@@ -17,7 +18,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
 
     const args = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
     try {
-      const result = await client.api.smartContract.invoke({
+      const result = await dApi.client.api.smartContract.invoke({
         scriptHash,
         operation,
         args,
@@ -42,7 +43,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     const args = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
 
     try {
-      const result = await client.api.smartContract.invokeRead({ scriptHash, operation, args });
+      const result = await dApi.client.api.smartContract.invokeRead({ scriptHash, operation, args });
       // tslint:disable-next-line:no-console
       console.log('onScCallRead finished, result:' + JSON.stringify(result));
     } catch (e) {
@@ -52,7 +53,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     }
   }
 
-  function convertValue(value: string, type: ParameterType) {
+  function convertValue(value: string, type: string) {
     switch (type) {
       case 'Boolean':
         return Boolean(value);
@@ -61,7 +62,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       case 'ByteArray':
         return value;
       case 'String':
-        return client.api.utils.strToHex(value);
+        return dApi.client.api.utils.strToHex(value);
     }
   }
 
@@ -77,7 +78,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     const gasLimit: number = Number(values.gasLimit);
 
     try {
-      const result = await client.api.smartContract.deploy({
+      const result = await dApi.client.api.smartContract.deploy({
         code,
         name,
         version,

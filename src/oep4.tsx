@@ -1,7 +1,8 @@
-import { client } from 'ontology-dapi';
 import * as React from 'react';
 import { Field, Form } from 'react-final-form';
 import { RouterProps } from 'react-router';
+
+declare var dApi: any;
 
 export const Oep4: React.SFC<RouterProps> = (props) => {
   async function onSend(values: any) {
@@ -10,7 +11,7 @@ export const Oep4: React.SFC<RouterProps> = (props) => {
     const asset: 'ONT' | 'ONG' = values.asset;
 
     try {
-      const result = await client.api.asset.send({ to, asset, amount });
+      const result = await dApi.client.api.asset.send({ to, asset, amount });
       alert('onSend finished, txHash:' + result);
     } catch (e) {
       alert('onSend canceled');

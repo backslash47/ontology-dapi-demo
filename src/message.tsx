@@ -1,16 +1,17 @@
-import { client, Signature } from 'ontology-dapi';
 import * as React from 'react';
 import { Field, Form } from 'react-final-form';
 import { RouterProps } from 'react-router';
 
 // tslint:disable:max-line-length
 
+declare var dApi: any;
+
 export const Message: React.SFC<RouterProps> = (props) => {
   async function onSignMessage(values: any) {
     const message: string = values.message;
 
     try {
-      const result = await client.api.message.signMessage({ message });
+      const result = await dApi.client.api.message.signMessage({ message });
       // tslint:disable-next-line:no-console
       console.log('signature:', result);
       alert('onSignMessage finished, signature:' + result.data);
@@ -26,13 +27,13 @@ export const Message: React.SFC<RouterProps> = (props) => {
     const data: string = values.signature;
     const publicKey: string = values.publicKey;
 
-    const signature: Signature = {
+    const signature = {
       data,
       publicKey
     };
 
     try {
-      const result = await client.api.message.verifyMessage({ message, signature });
+      const result = await dApi.client.api.message.verifyMessage({ message, signature });
       alert('onVerifyMessage finished, result:' + result);
     } catch (e) {
       alert('onVerifyMessage canceled');

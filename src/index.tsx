@@ -1,4 +1,3 @@
-import * as Ontology from 'ontology-dapi';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -9,6 +8,8 @@ import { Network } from './network';
 import { Oep4 } from './oep4';
 import { Provider } from './provider';
 import { SmartContract } from './smartContract';
+
+declare var dApi: any;
 
 const App: React.SFC<{}> = () => (
   <BrowserRouter>
@@ -24,5 +25,5 @@ const App: React.SFC<{}> = () => (
   </BrowserRouter>
 );
 
-Ontology.client.registerClient({});
+dApi.client.registerClient({});
 ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);

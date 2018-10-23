@@ -1,11 +1,12 @@
-import { client } from 'ontology-dapi';
 import * as React from 'react';
 import { RouterProps } from 'react-router';
+
+declare var dApi: any;
 
 export const Provider: React.SFC<RouterProps> = (props) => {
   async function onGetProvider() {
     try {
-      const result = await client.api.provider.getProvider();
+      const result = await dApi.client.api.provider.getProvider();
       alert('onGetProvider: ' + JSON.stringify(result));
     } catch (e) {
       alert('No dAPI provider istalled.');
