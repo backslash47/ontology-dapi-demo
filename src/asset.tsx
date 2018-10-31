@@ -9,6 +9,11 @@ export const Asset: React.SFC<RouterProps> = (props) => {
     alert('onGetAccount: ' + JSON.stringify(account));
   }
 
+  async function onGetPublicKey() {
+    const account = await client.api.asset.getPublicKey();
+    alert('onGetPublicKey: ' + JSON.stringify(account));
+  }
+
   async function onSend(values: any) {
     const to: string = values.recipient;
     const amount: number = Number(values.amount);
@@ -31,6 +36,8 @@ export const Asset: React.SFC<RouterProps> = (props) => {
   return (
     <div>
       <button onClick={onGetAccount}>getAccount</button>
+      <hr />
+      <button onClick={onGetPublicKey}>getPublicKey</button>
       <hr />
 
       <h2>Transfer</h2>
