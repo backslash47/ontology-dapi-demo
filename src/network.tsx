@@ -26,6 +26,21 @@ export const Network: React.SFC<RouterProps> = (props) => {
     alert('onGetBalance: ' + JSON.stringify(balance));
   }
 
+  async function onGetUnboundOng() {
+    const balance = await client.api.network.getUnboundOng({ address: 'AcyLq3tokVpkMBMLALVMWRdVJ83TTgBUwU' });
+    alert('onGetUnboundOng: ' + JSON.stringify(balance));
+  }
+
+  // async function onGetGrantOng() {
+  //   const balance = await client.api.network.getGrantOng({ address: 'AcyLq3tokVpkMBMLALVMWRdVJ83TTgBUwU' });
+  //   alert('onGetGrantOng: ' + JSON.stringify(balance));
+  // }
+
+  async function onGetGasPrice() {
+    const balance = await client.api.network.getGasPrice();
+    alert('onGetGasPrice: ' + JSON.stringify(balance));
+  }
+
   async function onGetNetwork() {
     const network = await client.api.network.getNetwork();
     alert('onGetNetwork: ' + JSON.stringify(network));
@@ -46,6 +61,10 @@ export const Network: React.SFC<RouterProps> = (props) => {
       <button onClick={onGetTransaction}>getTransaction</button>
       <hr />
       <button onClick={onGetBalance}>getBalance</button>
+      <hr />
+      <button onClick={onGetUnboundOng}>getUnboundOng</button>
+      <hr />
+      <button onClick={onGetGasPrice}>getGasPrice</button>
       <hr />
       <button onClick={onBack}>Back</button>
     </div>
