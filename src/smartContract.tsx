@@ -52,6 +52,36 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     }
   }
 
+  async function onScCallReadFix(values: any) {
+    const scriptHash: string = values.contract;
+    const operation: string = values.method;
+    const parameter0: string = values.parameter0;
+    const parameter1: string = values.parameter1;
+    const parameter0type: any = values.parameter0type;
+    const parameter1type: any = values.parameter1type;
+
+    // const args = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
+    const args = [
+      {
+        type: 'Array' as any,
+        value: [
+          { type: parameter0type, value: convertValue(parameter0, parameter0type) },
+          { type: parameter1type, value: convertValue(parameter1, parameter1type) }
+        ]
+      }
+    ];
+
+    try {
+      const result = await client.api.smartContract.invokeRead({ scriptHash, operation, args });
+      // tslint:disable-next-line:no-console
+      console.log('onScCallRead finished, result:' + JSON.stringify(result));
+    } catch (e) {
+      alert('onScCallRead canceled');
+      // tslint:disable-next-line:no-console
+      console.log('onScCallRead error:', e);
+    }
+  }
+
   function convertValue(value: string, type: ParameterType) {
     switch (type) {
       case 'Boolean':
@@ -169,9 +199,9 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       <h2>ScCall read</h2>
       <Form
         initialValues={{
-          contract: 'bd76a5917e0444d4b615b87c5912362164676dc7',
-          method: 'Add',
-          parameters: [{ type: 'Integer', value: '5' }, { type: 'Integer', value: '4' }]
+          contract: 'b4c21cf0d9a33613a63e6af4b5cb95e9d532d3eb',
+          method: 'Hello',
+          parameters: [{ type: 'Integer', value: '5' }]
         }}
         mutators={Object.assign({}, arrayMutators) as any}
         onSubmit={onScCallRead}
@@ -202,6 +232,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
                       <option value="Integer">Integer</option>
                       <option value="ByteArray">ByteArray</option>
                       <option value="String">String</option>
+                      <option value="Array">Array</option>
                     </Field>
                     <label>Value</label>
                     <Field name={`${name}.value`} component="input" />
@@ -212,6 +243,59 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
                 ))
               }
             </FieldArray>
+            <br />
+            <br />
+            <button type="submit">Call SC ReadOnly</button>
+          </form>
+        )}
+      />
+      <hr />
+      <hr />
+      <h2>ScCall read with array</h2>
+      <Form
+        initialValues={{
+          contract: 'b4c21cf0d9a33613a63e6af4b5cb95e9d532d3eb',
+          method: 'Hello',
+          parameter0: '5',
+          parameter0type: 'Integer',
+          parameter1: '6',
+          parameter1type: 'Integer'
+        }}
+        onSubmit={onScCallReadFix}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <h4>Contract</h4>
+            <Field name="contract" component="input" />
+
+            <h4>Method</h4>
+            <Field name="method" component="input" />
+
+            <h4>Parameters</h4>
+            <div>First parameter is array containing two items:</div>
+            <div key="0">
+              <label>Type</label>
+              <Field name="parameter0type" component="select">
+                <option value="Boolean">Boolean</option>
+                <option value="Integer">Integer</option>
+                <option value="ByteArray">ByteArray</option>
+                <option value="String">String</option>
+                <option value="Array">Array</option>
+              </Field>
+              <label>Value</label>
+              <Field name="parameter0" component="input" />
+            </div>
+            <div key="1">
+              <label>Type</label>
+              <Field name="parameter1type" component="select">
+                <option value="Boolean">Boolean</option>
+                <option value="Integer">Integer</option>
+                <option value="ByteArray">ByteArray</option>
+                <option value="String">String</option>
+                <option value="Array">Array</option>
+              </Field>
+              <label>Value</label>
+              <Field name="parameter1" component="input" />
+            </div>
             <br />
             <br />
             <button type="submit">Call SC ReadOnly</button>
