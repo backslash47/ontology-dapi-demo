@@ -232,7 +232,6 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
                       <option value="Integer">Integer</option>
                       <option value="ByteArray">ByteArray</option>
                       <option value="String">String</option>
-                      <option value="Array">Array</option>
                     </Field>
                     <label>Value</label>
                     <Field name={`${name}.value`} component="input" />
@@ -279,7 +278,6 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
                 <option value="Integer">Integer</option>
                 <option value="ByteArray">ByteArray</option>
                 <option value="String">String</option>
-                <option value="Array">Array</option>
               </Field>
               <label>Value</label>
               <Field name="parameter0" component="input" />
@@ -291,7 +289,6 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
                 <option value="Integer">Integer</option>
                 <option value="ByteArray">ByteArray</option>
                 <option value="String">String</option>
-                <option value="Array">Array</option>
               </Field>
               <label>Value</label>
               <Field name="parameter1" component="input" />
