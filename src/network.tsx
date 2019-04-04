@@ -26,6 +26,16 @@ export const Network: React.SFC<RouterProps> = (props) => {
     alert('onGetBalance: ' + JSON.stringify(balance));
   }
 
+  async function onGetSmartCodeEvent() {
+    // tslint:disable-next-line:max-line-length
+    const events = await client.api.network.getSmartCodeEvent({
+      // value: '2b6dc8e0b54742d1a09435532187637ed39dc8bc7faaac2f792954dc65699613'
+      value: '3a3f98df1d57be1644025addf041d4402b60091fbc63d0e107e7d264f1965b29'
+    });
+    // tslint:disable-next-line:no-console
+    console.log('onGetSmartCodeEvent: ' + JSON.stringify(events));
+  }
+
   async function onGetUnboundOng() {
     const balance = await client.api.network.getUnboundOng({ address: 'AcyLq3tokVpkMBMLALVMWRdVJ83TTgBUwU' });
     alert('onGetUnboundOng: ' + JSON.stringify(balance));
@@ -65,6 +75,8 @@ export const Network: React.SFC<RouterProps> = (props) => {
       <button onClick={onGetUnboundOng}>getUnboundOng</button>
       <hr />
       <button onClick={onGetGasPrice}>getGasPrice</button>
+      <hr />
+      <button onClick={onGetSmartCodeEvent}>getSmartCodeEvent</button>
       <hr />
       <button onClick={onBack}>Back</button>
     </div>

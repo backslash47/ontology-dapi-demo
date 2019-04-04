@@ -52,7 +52,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     }
   }
 
-  async function onScCallReadFix(values: any) {
+  async function onScCallReadArray(values: any) {
     const scriptHash: string = values.contract;
     const operation: string = values.method;
     const parameter0: string = values.parameter0;
@@ -60,7 +60,6 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
     const parameter0type: any = values.parameter0type;
     const parameter1type: any = values.parameter1type;
 
-    // const args = parametersRaw.map((raw) => ({ type: raw.type, value: convertValue(raw.value, raw.type) }));
     const args = [
       {
         type: 'Array' as any,
@@ -68,6 +67,37 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
           { type: parameter0type, value: convertValue(parameter0, parameter0type) },
           { type: parameter1type, value: convertValue(parameter1, parameter1type) }
         ]
+      }
+    ];
+
+    try {
+      const result = await client.api.smartContract.invokeRead({ scriptHash, operation, args });
+      // tslint:disable-next-line:no-console
+      console.log('onScCallRead finished, result:' + JSON.stringify(result));
+    } catch (e) {
+      alert('onScCallRead canceled');
+      // tslint:disable-next-line:no-console
+      console.log('onScCallRead error:', e);
+    }
+  }
+
+  async function onScCallReadMap(values: any) {
+    const scriptHash: string = values.contract;
+    const operation: string = values.method;
+    const parameter0: string = values.parameter0;
+    const parameter1: string = values.parameter1;
+    const parameter0type: any = values.parameter0type;
+    const parameter1type: any = values.parameter1type;
+    const parameter0name: string = values.parameter0name;
+    const parameter1name: string = values.parameter1name;
+
+    const args = [
+      {
+        type: 'Map' as any,
+        value: {
+          [parameter0name]: { type: parameter0type, value: convertValue(parameter0, parameter0type) },
+          [parameter1name]: { type: parameter1type, value: convertValue(parameter1, parameter1type) }
+        }
       }
     ];
 
@@ -250,7 +280,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
       />
       <hr />
       <hr />
-      <h2>ScCall read with array</h2>
+      <h2>ScCall read with Array parameter</h2>
       <Form
         initialValues={{
           contract: 'b4c21cf0d9a33613a63e6af4b5cb95e9d532d3eb',
@@ -260,7 +290,7 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
           parameter1: '6',
           parameter1type: 'Integer'
         }}
-        onSubmit={onScCallReadFix}
+        onSubmit={onScCallReadArray}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <h4>Contract</h4>
@@ -290,6 +320,63 @@ export const SmartContract: React.SFC<RouterProps> = (props) => {
                 <option value="ByteArray">ByteArray</option>
                 <option value="String">String</option>
               </Field>
+              <label>Value</label>
+              <Field name="parameter1" component="input" />
+            </div>
+            <br />
+            <br />
+            <button type="submit">Call SC ReadOnly</button>
+          </form>
+        )}
+      />
+      <hr />
+      <hr />
+      <h2>ScCall read with Map parameter</h2>
+      <Form
+        initialValues={{
+          contract: 'c6387b0abb96e384a3928fbca01e8e6f5f89a6bb',
+          method: 'testMap',
+          parameter0: '5',
+          parameter0name: 'val1',
+          parameter0type: 'Integer',
+          parameter1: '6',
+          parameter1name: 'val2',
+          parameter1type: 'Integer'
+        }}
+        onSubmit={onScCallReadMap}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <h4>Contract</h4>
+            <Field name="contract" component="input" />
+
+            <h4>Method</h4>
+            <Field name="method" component="input" />
+
+            <h4>Parameters</h4>
+            <div>First parameter is Map containing two items:</div>
+            <div key="0">
+              <label>Type</label>
+              <Field name="parameter0type" component="select">
+                <option value="Boolean">Boolean</option>
+                <option value="Integer">Integer</option>
+                <option value="ByteArray">ByteArray</option>
+                <option value="String">String</option>
+              </Field>
+              <label>Name</label>
+              <Field name="parameter0name" component="input" />
+              <label>Value</label>
+              <Field name="parameter0" component="input" />
+            </div>
+            <div key="1">
+              <label>Type</label>
+              <Field name="parameter1type" component="select">
+                <option value="Boolean">Boolean</option>
+                <option value="Integer">Integer</option>
+                <option value="ByteArray">ByteArray</option>
+                <option value="String">String</option>
+              </Field>
+              <label>Name</label>
+              <Field name="parameter1name" component="input" />
               <label>Value</label>
               <Field name="parameter1" component="input" />
             </div>
