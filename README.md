@@ -11,7 +11,7 @@ It is necessary to have installed suitable **dAPI provider** . Reference impleme
 ### Required Tools and Dependencies
 
 * Node
-* Npm
+* NPM
 
 ### Developing
 

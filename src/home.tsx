@@ -32,13 +32,13 @@ export const Home: React.SFC<RouterProps> = (props) => {
       <hr />
       <button onClick={onNetwork}>Network</button>
       <hr />
-      <button onClick={onMessage}>Messaage</button>
+      <button onClick={onMessage}>Message</button>
       <hr />
       <button onClick={onAsset}>Asset</button>
       <hr />
-      <button onClick={onOep4}>Oep4</button>
+      <button onClick={onOep4}>OEP-4</button>
       <hr />
-      <button onClick={onSmartContract}>Smart contract</button>
+      <button onClick={onSmartContract}>Smart Contract</button>
     </div>
   );
 };

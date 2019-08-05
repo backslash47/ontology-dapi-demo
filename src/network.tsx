@@ -72,7 +72,7 @@ export const Network: React.SFC<RouterProps> = (props) => {
       <hr />
       <button onClick={onGetBalance}>getBalance</button>
       <hr />
-      <button onClick={onGetUnboundOng}>getUnboundOng</button>
+      <button onClick={onGetUnboundOng}>getUnboundONG</button>
       <hr />
       <button onClick={onGetGasPrice}>getGasPrice</button>
       <hr />
